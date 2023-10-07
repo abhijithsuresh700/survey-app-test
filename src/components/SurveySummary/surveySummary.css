@@ -8,6 +8,7 @@
     margin: 0  ;
     display: flex;
     flex-direction: row;
+    overflow-x: hidden;
   }
   .surveyResultWrapper{
     flex: .5;
@@ -52,6 +53,7 @@
     .surveyResultContainer {
       flex-direction: column; 
       align-items: center;
+      padding: 5px 10px;
     }
     .question-text {
       margin-bottom: 10px;
