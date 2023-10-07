@@ -3,6 +3,8 @@ import "./surveyQuestions.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { answerQuestion, nextQuestion, submitSurvey } from '../../redux/surveySlice';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SurveyQuestions = () => {
     const dispatch = useDispatch();
@@ -15,20 +17,29 @@ const SurveyQuestions = () => {
      const handleOptionSelect = (questionId, selectedOption) => {
         dispatch(answerQuestion({ questionId, selectedOption }));
       };
-    
-      const handleNextOrSubmitClick = () => {
-        if (currentQuestionIndex === questions.length - 2 && !submitted) {
+
+    const handleNextOrSubmitClick = () => {
+      if (currentQuestionIndex === questions.length - 2 && !submitted) {
           const unansweredQuestions = questions.slice(currentQuestionIndex, currentQuestionIndex + 2).filter(question => !userAnswers[question.id]);
           if (unansweredQuestions.length === 0) {
-            dispatch(submitSurvey());
-            navigate("/results");
+              dispatch(submitSurvey());
+              navigate("/results");
           } else {
-            alert("Please answer all questions before submitting.");
+            toast.error("Please answer all questions before submitting.",{
+              theme: "dark"
+            });
           }
-        } else {
-          dispatch(nextQuestion());
-        }
-      };
+        } else if (
+          userAnswers[questions[currentQuestionIndex].id] &&
+          userAnswers[questions[currentQuestionIndex + 1].id]
+          ) {
+            dispatch(nextQuestion());
+          } else {
+        toast.error("Please answer all questions before proceeding.",{
+          theme: "dark"
+        });
+      }
+  };
     
       const isLastQuestion = currentQuestionIndex === questions.length - 1;
   return (
@@ -59,9 +70,11 @@ const SurveyQuestions = () => {
       <button 
       className='surveyQuestionsButton' 
       onClick={handleNextOrSubmitClick} 
-      disabled={!userAnswers[questions[currentQuestionIndex].id] || !userAnswers[questions[currentQuestionIndex + 1].id]}>
+      // disabled={!userAnswers[questions[currentQuestionIndex].id] || !userAnswers[questions[currentQuestionIndex + 1].id]}
+      >
         {currentQuestionIndex === questions.length - 2 ? 'Submit' : 'Next'}
       </button>
+      <ToastContainer />
     </div>
   )
 }
