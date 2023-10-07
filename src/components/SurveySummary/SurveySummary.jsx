@@ -54,7 +54,13 @@ const SurveySummary = () => {
         <ul className="surveyResultLists">
           {questions.map((question) => (
             <li key={question.id} className="surveyResultListItems">
-              {question.text} - Your Answer: {userAnswers[question.id]}
+              {/* {question.text} - Your Answer: {userAnswers[question.id]} */}
+              <div className="question-text">
+                <h4>{question.text}</h4>
+                <p className="answer-text">
+                  Your Answer: {userAnswers[question.id]}
+                </p>
+              </div>
             </li>
           ))}
         </ul>
