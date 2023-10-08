@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, } from "react";
+import React, { useEffect, useRef,useLayoutEffect } from "react";
 import "./surveySummary.css";
 import { useSelector } from "react-redux";
 import { Chart } from "chart.js/auto";
@@ -51,6 +51,13 @@ const SurveySummary = () => {
       }
     };
   }, []);
+
+  useLayoutEffect(()=>{
+        if (!questions || Object.keys(userAnswers).length === 0) {
+      navigate("/");
+   }
+
+  },[])
 
   return (
     <div className="surveyResultContainer">

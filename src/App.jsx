@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-    <BrowserRouter basename="/survey-app-test.vercel.app">
+    <BrowserRouter basename="">
     <Routes>
       <Route path='/' element={<SurveyQuestions/>}/>
       <Route path='/results' element={<SurveySummary/>}/>
