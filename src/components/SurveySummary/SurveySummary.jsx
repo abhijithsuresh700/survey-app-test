@@ -23,9 +23,10 @@ const SurveySummary = () => {
   const totalScore = questions.length;
 
   useEffect(() => {
-    if (!questions || Object.keys(userAnswers).length === 0) {
-      navigate("/");
-   }
+  //   if (!questions || Object.keys(userAnswers).length === 0) {
+  //     navigate("/");
+  //  }
+
 
     if (chartInstance.current) {
       chartInstance.current.destroy();
@@ -50,7 +51,6 @@ const SurveySummary = () => {
       }
     };
   }, []);
-
 
   return (
     <div className="surveyResultContainer">
