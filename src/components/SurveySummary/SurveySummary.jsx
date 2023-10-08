@@ -1,14 +1,14 @@
-import React, { useEffect, useRef,useLayoutEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import "./surveySummary.css";
 import { useSelector } from "react-redux";
 import { Chart } from "chart.js/auto";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
 
 const SurveySummary = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const questions = useSelector((state) => state.survey.questions);
   const userAnswers = useSelector((state) => state.survey.userAnswers);
+  console.log(userAnswers, "userAnswers");
 
   const chartRef = useRef(null);
   const chartInstance = useRef(null);
@@ -23,10 +23,9 @@ const SurveySummary = () => {
   const totalScore = questions.length;
 
   useEffect(() => {
-  //   if (!questions || Object.keys(userAnswers).length === 0) {
-  //     navigate("/");
-  //  }
-
+    if (!questions || Object.keys(userAnswers).length === 0) {
+      navigate("/");
+    }
 
     if (chartInstance.current) {
       chartInstance.current.destroy();
@@ -52,13 +51,6 @@ const SurveySummary = () => {
     };
   }, []);
 
-  useLayoutEffect(()=>{
-        if (!questions || Object.keys(userAnswers).length === 0) {
-      navigate("/");
-   }
-
-  },[])
-
   return (
     <div className="surveyResultContainer">
       <div className="surveyResultWrapper">
@@ -73,16 +65,31 @@ const SurveySummary = () => {
               <div className="question-text">
                 <h4>{question.text}</h4>
                 <p className="answer-text">
-                  Your Answer: {userAnswers[question.id]}
+                  Your Answer:{" "}
+                  <span
+                    className={
+                      userAnswers[question.id] === question.correctAnswer
+                        ? "green-text"
+                        : "red-text"
+                    }
+                  >
+                    {userAnswers[question.id]}
+                  </span>
                 </p>
+                {userAnswers[question.id] !== question.correctAnswer && (
+                  <p>
+                    Correct Answer:
+                    <span className="correct-answer">
+                      {question.correctAnswer}
+                    </span>
+                  </p>
+                )}
               </div>
             </li>
           ))}
         </ul>
       </div>
-      <div
-        className="surveyResult"
-      >
+      <div className="surveyResult">
         <h1 className="surveyResultTitle">Your Performance</h1>
         <canvas ref={chartRef} />
       </div>
