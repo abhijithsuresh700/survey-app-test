@@ -1,9 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, } from "react";
 import "./surveySummary.css";
 import { useSelector } from "react-redux";
 import { Chart } from "chart.js/auto";
+import { useNavigate } from 'react-router-dom';
+
 
 const SurveySummary = () => {
+  const navigate = useNavigate()
   const questions = useSelector((state) => state.survey.questions);
   const userAnswers = useSelector((state) => state.survey.userAnswers);
 
@@ -20,6 +23,10 @@ const SurveySummary = () => {
   const totalScore = questions.length;
 
   useEffect(() => {
+    if (!questions || Object.keys(userAnswers).length === 0) {
+      navigate("/");
+   }
+
     if (chartInstance.current) {
       chartInstance.current.destroy();
     }
@@ -43,6 +50,8 @@ const SurveySummary = () => {
       }
     };
   }, []);
+
+
   return (
     <div className="surveyResultContainer">
       <div className="surveyResultWrapper">
@@ -54,7 +63,6 @@ const SurveySummary = () => {
         <ul className="surveyResultLists">
           {questions.map((question) => (
             <li key={question.id} className="surveyResultListItems">
-              {/* {question.text} - Your Answer: {userAnswers[question.id]} */}
               <div className="question-text">
                 <h4>{question.text}</h4>
                 <p className="answer-text">
